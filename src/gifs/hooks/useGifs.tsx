@@ -23,6 +23,8 @@ export const useGifs = () => {
 
     const gifs = await getGifsByQuery(query);
     setSearchedGifs(gifs);
+    gifsCache.current[query] = gifs;
+
   };
 
   const handleSearch = async (query: string) => {
@@ -31,19 +33,19 @@ export const useGifs = () => {
       return console.log("Debe insertar un elemento no vacío y sin espacios");
     if (previousTerms.includes(query))
       return console.log("busqueda ya realizada");
-    const newsetPreviousTerms = [query, ...previousTerms].splice(0, 7);
+    const newsetPreviousTerms = [query, ...previousTerms].splice(0, 8);
     setPreviousTerms(newsetPreviousTerms);
 
     const gifs = await getGifsByQuery(query);
-
     setSearchedGifs(gifs);
-
     gifsCache.current[query] = gifs;
   };
 
   return {
+    //Properties
     searchedGifs,
     previousTerms,
+    //Methods
     handleTermsClicked,
     handleSearch,
   };
